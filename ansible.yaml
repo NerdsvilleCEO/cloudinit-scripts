@@ -1,0 +1,30 @@
+#cloud-config
+# Add groups to the system
+# The following example adds the ubuntu group with members 'root' and 'sys'
+# and the empty group cloud-users.
+groups:
+  - ubuntu: [root,sys]
+  - ansible
+
+# Add users to the system. Users are added after groups are added.
+users:
+  - default
+  - name: ansible
+    gecos: Ansible User
+    primary_group: ansible
+    groups: users
+    selinux_user: staff_u
+    lock_passwd: false
+    snapuser: josh@omnidapps.com # TODO: Check cloudinit variable support (maybe envsubst?)
+
+# Configures default user specified above
+system_info:
+  default_user:
+   name: Ubuntu
+   home: /home/ubuntu
+   shell: /bin/bash
+   ssh_authorized_keys:
+     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrO7VxFGAZ3gnyp5k4+aazOHbyhDQTyIFBObUrRsjOMcO+XAeJ/cenoNh9BvFwmWfyTZjjW3LgfILKofOldrigJjeXcy4QZ9JNgi6GWn5yhlBNAT15TwVbzI3xee7hoUpZiyG8aR33aOxXD0fQfmQ/o09395Ez1l2akWe2Jq6CFtmdCnJzgixLR0C76tsVkke5+qp6HaHpOC990CouVDAeSVsBBhq4AM/zY2hFcydYjSTPL8d9nPETwJ+nW7v6o8dSuuXl6oe2fnY8oBJFkHV8J+l429pcnITqRAkSmqkjzPAYAZj3vT6jKUGYF5+yBTr0YvVymyKekb7OZ0yi6BWT josh@omnidapps.com
+   lock_passwd: True
+   gecos: Ubuntu
+   groups: [adm, audio, cdrom, dialout, floppy, video, plugdev, dip, netdev]
